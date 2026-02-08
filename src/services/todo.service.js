@@ -21,10 +21,15 @@ const updateTodo = async (id, data) => {
     return await Todo.findByIdAndUpdate(id, data, { new: true});
 }
 
+const updateTodoPartial = async (id, data) => {
+    return await Todo.findByIdAndUpdate(id, data, {new: true});
+}
+
 module.exports = {
     createTodo,
     getTodo,
     deleteTodo,
     updateTodo,
-    getAllTodo
+    getAllTodo,
+    updateTodoPartial
 }

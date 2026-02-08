@@ -41,10 +41,19 @@ const updateTodo = async (req, res) => {
     res.json({ message: "Todo updated successfully" });
 }
 
+const updateTodoPartial = async (req, res) => {
+    const todo = await todoService.updateTodoPartial(req.params.id, req.body);
+    if(!todo) {
+        return res.status(404).json({message: "Todo not found"});
+    }
+    res.json({message: "Todo updated successfully"});
+}
+
 module.exports = {
     createTodo,
     getTodo,
     deleteTodo,
     updateTodo,
     getAllTodo,
+    updateTodoPartial
 }

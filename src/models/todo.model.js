@@ -13,18 +13,24 @@ const todoSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        // priority: {
-        //     type: String,
-        //     required: true,
-        // },
-        // status: {
-        //     type: String,
-        //     required: true,
-        // },
-        // dueData: {
-        //     type: String,
-        //     required: true,
-        // },
+        priority: {
+            type: String,
+            required: true,
+        },
+        status: {
+            type: String,
+            default: 'active',
+            required: true,
+        },
+        catogory: {
+            type: String,
+            default: 'work',
+            required: true,
+        },
+        dueDate: {
+            type: String,
+            required: true,
+        },
 
     },
     { timestamps: true }
