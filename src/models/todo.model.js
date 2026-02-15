@@ -22,7 +22,7 @@ const todoSchema = new mongoose.Schema(
             default: 'active',
             required: true,
         },
-        catogory: {
+        category: {
             type: String,
             default: 'work',
             required: true,
