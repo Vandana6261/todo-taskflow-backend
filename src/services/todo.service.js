@@ -13,8 +13,9 @@ const getTodo = async (id) => {
     return await Todo.findById(id);
 }
 
-const deleteTodo = async (id) => {
-    return await Todo.findByIdAndDelete(id);
+const deleteTodo = async (id, data) => {
+    // return await Todo.findByIdAndDelete(id);
+    return await Todo.findByIdAndUpdate(id, data, {new: true});
 }
 
 const updateTodo = async (id, data) => {
