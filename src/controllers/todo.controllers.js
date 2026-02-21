@@ -26,7 +26,8 @@ const getTodo = async (req, res) => {
 }
 
 const deleteTodo = async (req, res) => {
-    const todo = await todoService.deleteTodo(req.params.id);
+    console.log("deleteTodo called")
+    const todo = await todoService.deleteTodo(req.params.id, req.body);
     if(!todo) {
         return res.status(404).json({message: "Todo not found"});
     }
@@ -34,6 +35,7 @@ const deleteTodo = async (req, res) => {
 }
 
 const updateTodo = async (req, res) => {
+    console.log("Update todo called")
     const todo = await todoService.updateTodo(req.params.id, req.body);
     if(!todo) {
         return res.status(404).json({message: "Todo not found"});
