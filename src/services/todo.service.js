@@ -9,10 +9,6 @@ const getAllTodo = async () => {
     return await Todo.find();
 }
 
-const getTodo = async (id) => {
-    return await Todo.findById(id);
-}
-
 const deleteTodo = async (id, data) => {
     // return await Todo.findByIdAndDelete(id);
     return await Todo.findByIdAndUpdate(id, data, {new: true});
@@ -22,15 +18,24 @@ const updateTodo = async (id, data) => {
     return await Todo.findByIdAndUpdate(id, data, { new: true});
 }
 
+const searchTodo = async (keyword) => {
+    return await Todo.find({
+        $or: [
+            {title: {$regex : keyword, $options: 'i'}},
+            {description: { $regex: keyword, $options: 'i'}}     // i means case insensitive
+        ]
+    });
+}
+
 const updateTodoPartial = async (id, data) => {
     return await Todo.findByIdAndUpdate(id, data, {new: true});
 }
 
 module.exports = {
     createTodo,
-    getTodo,
     deleteTodo,
     updateTodo,
     getAllTodo,
+    searchTodo,
     updateTodoPartial
 }

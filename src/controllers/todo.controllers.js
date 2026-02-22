@@ -20,11 +20,6 @@ const getAllTodo = async (req, res) => {
     }
 }
 
-const getTodo = async (req, res) => {
-    const todo = await todoService.getTodo(req.params.id);
-    res.json(todo);
-}
-
 const deleteTodo = async (req, res) => {
     console.log("deleteTodo called")
     const todo = await todoService.deleteTodo(req.params.id, req.body);
@@ -43,6 +38,16 @@ const updateTodo = async (req, res) => {
     res.json({ message: "Todo updated successfully" });
 }
 
+const searchTodo = async (req, res) => {
+    console.log("Search todo called");
+    const todo = await todoService.searchTodo(req.params.keyword);
+    if(!todo) {
+        return res.status(404).json({message: "Todo not found"});
+    }
+    console.log(todo)
+    res.json(todo);
+}
+
 const updateTodoPartial = async (req, res) => {
     const todo = await todoService.updateTodoPartial(req.params.id, req.body);
     if(!todo) {
@@ -53,9 +58,9 @@ const updateTodoPartial = async (req, res) => {
 
 module.exports = {
     createTodo,
-    getTodo,
     deleteTodo,
     updateTodo,
     getAllTodo,
+    searchTodo,
     updateTodoPartial
 }
