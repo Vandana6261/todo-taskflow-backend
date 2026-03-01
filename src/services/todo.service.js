@@ -1,12 +1,18 @@
 
 const Todo = require('../models/todo.model')
+const Category = require('../models/category.model')
 
 const createTodo = async (data) => {
+    console.log(data, "data")
+    // return await Todo.create(data);
     return await Todo.create(data);
 }
 
 const getAllTodo = async () => {
     return await Todo.find();
+}
+const getCategory = async () => {
+    return await Category.find();
 }
 
 const deleteTodo = async (id, data) => {
@@ -27,6 +33,11 @@ const searchTodo = async (keyword) => {
     });
 }
 
+const createCategory = async (data) => {
+    console.log("Call service")
+    return await Category.create(data)
+}
+
 const updateTodoPartial = async (id, data) => {
     return await Todo.findByIdAndUpdate(id, data, {new: true});
 }
@@ -37,5 +48,8 @@ module.exports = {
     updateTodo,
     getAllTodo,
     searchTodo,
-    updateTodoPartial
+    createCategory,
+    getCategory,
+    // getInitialCategory,
+    updateTodoPartial,
 }
