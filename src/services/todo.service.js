@@ -9,7 +9,7 @@ const createTodo = async (data) => {
 }
 
 const getAllTodo = async () => {
-    return await Todo.find();
+    return await Todo.find().populate("category");
 }
 const getCategory = async () => {
     return await Category.find();

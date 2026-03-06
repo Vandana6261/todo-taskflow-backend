@@ -15,6 +15,7 @@ const getAllTodo = async (req, res) => {
   try {
     console.log("getAllTodo called in controller")
     const todos = await todoService.getAllTodo();
+    await seedDefaultCategories();
     const categories = await todoService.getCategory();
     return res.json({todos, categories});
   } catch (error) {
