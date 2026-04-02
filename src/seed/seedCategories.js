@@ -1,5 +1,5 @@
 
-const Category = require('../models/category.model')
+const Category = require('../models/category')
 
 const defaultCategories = ['work', 'shopping', 'personal'];
 
