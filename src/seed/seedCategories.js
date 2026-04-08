@@ -3,7 +3,7 @@ const Category = require('../models/category')
 
 const defaultCategories = ['work', 'shopping', 'personal'];
 
-const seedDefaultCategories = async () => {
+const seedDefaultCategories = async (user) => {
     try {
         for(let cat of defaultCategories) {
             const exists = await Category.findOne({name: cat, isDefault: true});
@@ -12,8 +12,8 @@ const seedDefaultCategories = async () => {
                 let c = await Category.create({
                     name: cat,
                     isDefault: true,
+                    user: user
                 })
-                console.log(c)
             }
         }
         console.log("Default categories checked/added")
