@@ -9,8 +9,7 @@ exports.varifyToken = (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded)
-        req.user = decoded;
+        req.body.user = decoded.id;
         next();
         
     } catch (error) {

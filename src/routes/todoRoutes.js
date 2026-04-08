@@ -13,22 +13,26 @@ const {
     getUserTodo
 
 } = require('../controllers/todoControllers')
+const { varifyToken } = require('../middleware/authMiddleware');
 
 console.log("todo routes called")
-router.post('/', createTodo);    // done
 
-router.get('/', getAllTodo);     // done
-router.get('/getCat', getInitialCategory);     // done
+// router.post('/', createTodo);    // done
 
-router.delete('/:id', deleteTodo);   // done
+// router.get('/', getAllTodo);     // done
+// router.get('/getCat', getInitialCategory);     // done
 
-router.put('/:id', updateTodo);      //done
+// router.delete('/:id', deleteTodo);   // done
 
-router.get('/:keyword', searchTodo)  // done
+// router.put('/:id', updateTodo);      //done
 
-router.post('/createCategory', createCategory);
-router.post('/signUp', createUser);
+// router.get('/:keyword', searchTodo)  // done
 
-router.get('/getUserTodo/:userId', getUserTodo);
+// router.post('/createCategory', createCategory);
+// router.post('/signUp', createUser);
+
+// router.get('/getUserTodo/:userId', getUserTodo);
+
+router.post("/createTodo", varifyToken, createTodo)
 
 module.exports = router;
