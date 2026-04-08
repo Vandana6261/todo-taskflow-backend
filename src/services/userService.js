@@ -4,7 +4,6 @@ const {generateToken} = require("../utils/token")
 
 const register = async(data) => {
     console.log("userService called")
-    console.log(data);
 
     const {email, password} = data;
     const isUserExists = await User.findOne({email});
@@ -26,7 +25,8 @@ const register = async(data) => {
 }
 
 const getProfile = async(userId) => {
-    return await User.find({user: userId}).select("-password");
+    const user = await User.findById(userId).select("-password");
+    return user;
 }
 
 const login = async(data) => {
@@ -67,20 +67,3 @@ module.exports = {
     getProfile,
     login
 }
-
-
-
-
-
-
-// exports.register = async (req, res) => {
-//     try {
-//         console.log("register")
-//         const response = await userService.register(req.body)
-//         return res.status(201).json(response);
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({message: error.message})
-//     }
-    
-// }
