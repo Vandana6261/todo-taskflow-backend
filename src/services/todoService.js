@@ -5,7 +5,6 @@ const User = require('../models/user')
 
 const createTodo = async (data) => {
     console.log(data, "data")
-    // return await Todo.create(data);
     return await Todo.create(data);
 }
 
@@ -18,7 +17,6 @@ const getCategory = async () => {
 }
 
 const deleteTodo = async (id, data) => {
-    // return await Todo.findByIdAndDelete(id);
     return await Todo.findByIdAndUpdate(id, data, {new: true});
 }
 

@@ -3,8 +3,9 @@ const seedDefaultCategories = require("../seed/seedCategories")
 
 const createTodo = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log(req.body, 6);
     const todo = await todoService.createTodo(req.body);
+    console.log(todo);
     res.status(201).json(todo);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -55,7 +56,6 @@ const searchTodo = async (req, res) => {
   if (!todo) {
     return res.status(404).json({ message: "Todo not found" });
   }
-  console.log(todo);
   res.json(todo);
 };
 
