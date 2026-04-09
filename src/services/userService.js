@@ -2,6 +2,8 @@ const User = require('../models/user')
 const bcrypt = require("bcryptjs")
 const {generateToken} = require("../utils/token")
 
+console.log("userService called")
+
 const register = async(data) => {
     console.log("userService called")
 

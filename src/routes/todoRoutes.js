@@ -34,5 +34,8 @@ console.log("todo routes called")
 // router.get('/getUserTodo/:userId', getUserTodo);
 
 router.post("/createTodo", varifyToken, createTodo)
+router.get("/getTodo", varifyToken, getAllTodo);
+router.delete("/:id", varifyToken, deleteTodo);
+router.put("/:id", varifyToken, updateTodo)
 
 module.exports = router;

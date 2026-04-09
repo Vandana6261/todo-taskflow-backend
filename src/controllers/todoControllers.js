@@ -3,9 +3,8 @@ const seedDefaultCategories = require("../seed/seedCategories")
 
 const createTodo = async (req, res) => {
   try {
-    console.log(req.body, 6);
-    const todo = await todoService.createTodo(req.body);
-    console.log(todo);
+    const todoData = {...req.body, user: req.userId};
+    const todo = await todoService.createTodo(todoData);
     res.status(201).json(todo);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -15,10 +14,9 @@ const createTodo = async (req, res) => {
 const getAllTodo = async (req, res) => {
   try {
     console.log("getAllTodo called in controller")
-    const todos = await todoService.getAllTodo();
-    await seedDefaultCategories();
-    const categories = await todoService.getCategory();
-    return res.json({todos, categories});
+
+    const response = await todoService.getAllTodo(req.userId);
+    return res.json(response)
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -34,7 +32,8 @@ const getInitialCategory = async (req, res) => {
 
 const deleteTodo = async (req, res) => {
   console.log("deleteTodo called");
-  const todo = await todoService.deleteTodo(req.params.id, req.body);
+  console.log(req.params.id, req.userId)
+  const todo = await todoService.deleteTodo(req.params.id, req.userId);
   if (!todo) {
     return res.status(404).json({ message: "Todo not found" });
   }
@@ -43,7 +42,7 @@ const deleteTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   console.log("Update todo called");
-  const todo = await todoService.updateTodo(req.params.id, req.body);
+  const todo = await todoService.updateTodo(req.params.id, req.userId, req.body);
   if (!todo) {
     return res.status(404).json({ message: "Todo not found" });
   }

@@ -4,7 +4,7 @@ const {generateToken} = require("../utils/token");
 const userService  = require('../services/userService') 
 const seedDefaultCategories = require("../seed/seedCategories")
 
-
+console.log("authController called")
 exports.register = async (req, res) => {
     try {
         console.log("register")
