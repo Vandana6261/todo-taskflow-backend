@@ -8,11 +8,15 @@ console.log("authController called")
 exports.register = async (req, res) => {
     try {
         console.log("register")
+        console.log(req.body)
         const response = await userService.register(req.body)
         if(!response.success) {
             return res.status(400).json({message: response.message})
         }
         await seedDefaultCategories(response.user);
+        const {email, password} = {...response};
+        console.log(email, password)
+        
         return res.status(201).json(response);
     } catch (error) {
         console.log(error)
@@ -23,6 +27,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+        console.log("Login",)
         console.log("login")
         const response = await userService.login(req.body);
         if(!response.success) {
@@ -37,7 +42,9 @@ exports.login = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        const user = await userService.getProfile(req.user.id)
+        console.log("getProfile called")
+        console.log(req.userId)
+        const user = await userService.getProfile(req.userId)
         res.json(user);
     } catch (error) {
         res.status(500).json({message: error.message});
