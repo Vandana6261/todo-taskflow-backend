@@ -8,16 +8,20 @@ console.log("authController called")
 exports.register = async (req, res) => {
     try {
         console.log("register")
-        console.log(req.body)
         const response = await userService.register(req.body)
         if(!response.success) {
             return res.status(400).json({message: response.message})
         }
-        await seedDefaultCategories(response.user);
-        const {email, password} = {...response};
-        console.log(email, password)
+
         
-        return res.status(201).json(response);
+        await seedDefaultCategories(response.user._id);
+        const loginResponse = await userService.login({email: response.user.email, password: req.body.password});           // token receive from this
+        if(!loginResponse.success) {
+            return res.status(400).json({message: response.message})
+        }
+        
+        return res.status(201).json(loginResponse);
+        
     } catch (error) {
         console.log(error)
         res.status(500).json({message: error.message})
@@ -28,7 +32,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         console.log("Login",)
-        console.log("login")
         const response = await userService.login(req.body);
         if(!response.success) {
             res.status(400).json({message: response.message});

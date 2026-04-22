@@ -3,16 +3,16 @@ const Category = require('../models/category')
 
 const defaultCategories = ['work', 'shopping', 'personal'];
 
-const seedDefaultCategories = async (user) => {
+const seedDefaultCategories = async (userId) => {
     try {
         for(let cat of defaultCategories) {
-            const exists = await Category.findOne({name: cat, isDefault: true});
-            console.log(exists, "exists")
+            const exists = await Category.findOne({_id: userId, name: cat, isDefault: true});
             if(!exists) {
+                console.log(userId, "13 seed category");
                 let c = await Category.create({
                     name: cat,
                     isDefault: true,
-                    user: user
+                    user: userId
                 })
             }
         }

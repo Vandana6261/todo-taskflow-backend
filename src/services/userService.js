@@ -35,6 +35,7 @@ const login = async(data) => {
     console.log("login service")
     const {email, password} = data;
     const user = await User.findOne({email});
+    
     if(!user) {
         return {
             success: false,
@@ -43,6 +44,7 @@ const login = async(data) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+    
     if(!isMatch) {
         return {
             success: false,
