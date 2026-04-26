@@ -47,8 +47,8 @@ exports.getProfile = async (req, res) => {
     try {
         console.log("getProfile called")
         console.log(req.userId)
-        const user = await userService.getProfile(req.userId)
-        res.json(user);
+        const userInfo = await userService.getProfile(req.userId)
+        res.json(userInfo);
     } catch (error) {
         res.status(500).json({message: error.message});
     }

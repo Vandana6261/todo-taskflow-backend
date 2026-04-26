@@ -1,6 +1,8 @@
-const User = require('../models/user')
 const bcrypt = require("bcryptjs")
 const {generateToken} = require("../utils/token")
+const Todo = require("../models/todo");
+const User = require("../models/user");
+const Category = require("../models/category");
 
 console.log("userService called")
 
@@ -28,7 +30,16 @@ const register = async(data) => {
 
 const getProfile = async(userId) => {
     const user = await User.findById(userId).select("-password");
-    return user;
+    const todo = await Todo.find({ user: user._id });
+    const category = await Category.find( {user: user._id });
+    console.log("user", user);
+    console.log("todo", todo);
+    console.log("category", category);
+    return {
+        user,
+        todo,
+        category
+    }
 }
 
 const login = async(data) => {
