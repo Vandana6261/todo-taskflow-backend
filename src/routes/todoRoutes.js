@@ -14,6 +14,7 @@ const {
 
 } = require('../controllers/todoControllers')
 const { varifyToken } = require('../middleware/authMiddleware');
+const { getCategory } = require('../controllers/todoControllers');
 
 console.log("todo routes called")
 
@@ -35,7 +36,10 @@ console.log("todo routes called")
 
 router.post("/createTodo", varifyToken, createTodo)
 router.get("/getTodo", varifyToken, getAllTodo);
+// router.get("/getTodo", getAllTodo);
+router.get('/getCat', varifyToken, getCategory)
+
 router.delete("/:id", varifyToken, deleteTodo);
-router.put("/:id", varifyToken, updateTodo)
+router.put("/:id", varifyToken, updateTodo);
 
 module.exports = router;

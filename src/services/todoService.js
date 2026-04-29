@@ -11,7 +11,10 @@ const createTodo = async (data) => {
 
 const getAllTodo = async (userId) => {
   // console.log(userId, "userId")
-  const todos = await Todo.find({ user: userId });
+  const todos = await Todo.find({ 
+    user: userId,
+    isDeleted: false
+  });
   return todos;
 };
 
@@ -36,8 +39,10 @@ const updateTodo = async (todoId, userId, data) => {
   return updatedTodo;
 };
 
-const getCategory = async () => {
-  return await Category.find();
+const getCategory = async (userId) => {
+  console.log("getCategory in service")
+  const category = await Category.find({user: userId});
+  return category;
 };
 
 
@@ -75,7 +80,7 @@ module.exports = {
   getAllTodo,
 //   searchTodo,
 //   createCategory,
-//   getCategory,
+  getCategory,
 //   createUser,
 //   getUserTodo,
   // getInitialCategory,

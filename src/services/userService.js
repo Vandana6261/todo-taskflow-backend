@@ -30,16 +30,7 @@ const register = async(data) => {
 
 const getProfile = async(userId) => {
     const user = await User.findById(userId).select("-password");
-    const todo = await Todo.find({ user: user._id });
-    const category = await Category.find( {user: user._id });
-    console.log("user", user);
-    console.log("todo", todo);
-    console.log("category", category);
-    return {
-        user,
-        todo,
-        category
-    }
+    return user;
 }
 
 const login = async(data) => {

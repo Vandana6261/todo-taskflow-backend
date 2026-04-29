@@ -22,9 +22,15 @@ const getAllTodo = async (req, res) => {
   }
 };
 
-const getInitialCategory = async (req, res) => {
+const getCategory = async (req, res) => {
+  console.log("getCategory in controller")
   try {
-    await seedDefaultCategories();
+    // await seedDefaultCategories();
+    const category = await todoService.getCategory(req.userId)
+    console.log(category,"category")
+    return res.json({
+      categories: category
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -94,7 +100,7 @@ module.exports = {
   getAllTodo,
   searchTodo,
   createCategory,
-  getInitialCategory,
+  getCategory,
   createUser,
   getUserTodo,
 };
