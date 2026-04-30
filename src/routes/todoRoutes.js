@@ -18,6 +18,8 @@ const { getCategory } = require('../controllers/todoControllers');
 
 console.log("todo routes called")
 
+router.use(varifyToken);
+
 // router.post('/', createTodo);    // done
 
 // router.get('/', getAllTodo);     // done
@@ -34,12 +36,12 @@ console.log("todo routes called")
 
 // router.get('/getUserTodo/:userId', getUserTodo);
 
-router.post("/createTodo", varifyToken, createTodo)
-router.get("/getTodo", varifyToken, getAllTodo);
+router.post("/createTodo", createTodo)
+router.get("/getTodo", getAllTodo);
 // router.get("/getTodo", getAllTodo);
-router.get('/getCat', varifyToken, getCategory)
+router.get('/getCat', getCategory)
 
-router.delete("/:id", varifyToken, deleteTodo);
-router.put("/:id", varifyToken, updateTodo);
+router.delete("/:id", deleteTodo);
+router.put("/:id", updateTodo);
 
 module.exports = router;

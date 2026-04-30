@@ -10,6 +10,8 @@ console.log("inside userRoute")
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 
-router.get("/profile", varifyToken, authController.getProfile);
+router.use(varifyToken)
+
+router.get("/profile", authController.getProfile);
 
 module.exports = router;

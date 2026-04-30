@@ -1,6 +1,7 @@
 const cors = require("cors")
 const express = require('express');
 const app = express();
+const {varifyToken} = require("./middleware/authMiddleware")
 
 
 app.use(
