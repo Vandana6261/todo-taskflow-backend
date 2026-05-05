@@ -6,20 +6,22 @@ const Category = require("../models/category");
 
 console.log("userService called")
 
-const register = async(data) => {
+const saveUserInfo = async(data) => {
     console.log("userService called")
 
     const {email, password} = data;
-    const isUserExists = await User.findOne({email});
-    if(isUserExists) {
+    let user = await User.findOne({email});
+    
+    if(user) {
         return {
-            success: false,
-            message: "User already exists"
+            success: true,
+            message: "User already exists",
+            user
         }
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({...data, password: hashedPassword})
+    user = await User.create({...data, password: hashedPassword})
     return {
         success: true,
         message: "User register successfully",
@@ -27,6 +29,22 @@ const register = async(data) => {
     }
 
 }
+
+const register = async(email) => {
+    const user = await User.findOne({email});
+    console.log("register user called")
+    if(!user) {
+        return resjson({success: false, message: "User not found"})
+    }
+    
+    const updatedUser = await User.findByIdAndUpdate(
+        user._id, 
+        {$set: {isVarified: true}},
+        {new: true}
+    )
+    return {success: true, message: "User registered successfully", user: updatedUser};
+}
+ 
 
 const getProfile = async(userId) => {
     const user = await User.findById(userId).select("-password");
@@ -69,6 +87,7 @@ const login = async(data) => {
 
 
 module.exports = {
+    saveUserInfo,
     register, 
     getProfile,
     login

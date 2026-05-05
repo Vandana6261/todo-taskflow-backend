@@ -7,10 +7,13 @@ const { varifyToken } = require('../middleware/authMiddleware');
 
 console.log("inside userRoute")
 // router.post('/signUp', userController.createUser);
-router.post("/register", authController.register);
+
+router.post('/send-otp', authController.saveUserInfo, authController.sendOtp)
+router.post('/varifyOtp', authController.varifyOTPAndSignup)
+// router.post("/register", authController.register);
 router.post("/login", authController.login);
 
-router.use(varifyToken)
+// router.use(varifyToken)
 
 router.get("/profile", authController.getProfile);
 

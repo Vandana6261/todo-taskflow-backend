@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         max: 20,
         trim: true
     },
+    isVarified: {
+        type: Boolean,
+        default: false
+    },
 })
 
 
