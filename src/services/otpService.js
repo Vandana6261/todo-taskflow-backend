@@ -1,14 +1,14 @@
 const nodemailer = require("nodemailer");
 const Otp = require("../models/otp");
 
-const saveOtp = async (otp, email) => {
+const saveOtp = async (otp, email, userId) => {
   console.log("otp saved");
   const newOtp = await Otp.create({
     otp: otp,
     email: email,
-    expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    userId,
+    expiresAt: new Date(Date.now() + 30 * 60 * 1000),
   });
-  console.log(newOtp, "newOtp");
   return newOtp;
 };
 
@@ -33,7 +33,6 @@ const sendOtpEmail = async (email, otp) => {
     };
 
     const response = await this.sendOtp(email, otp);
-    console.log(response);
     return response;
     // return response;
   } catch (error) {
