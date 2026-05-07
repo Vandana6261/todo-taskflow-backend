@@ -4,6 +4,7 @@ const seedDefaultCategories = require("../seed/seedCategories")
 const createTodo = async (req, res) => {
   try {
     const todoData = {...req.body, user: req.userId};
+    console.log(todoData)
     const todo = await todoService.createTodo(todoData);
     res.status(201).json(todo);
   } catch (error) {
