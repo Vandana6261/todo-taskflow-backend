@@ -9,11 +9,13 @@ console.log("inside userRoute")
 // router.post('/signUp', userController.createUser);
 
 router.post('/send-otp', authController.saveUserInfo, authController.sendOtp)
-router.post('/varifyOtp', authController.varifyOTPAndSignup)
-// router.post("/register", authController.register);
 router.post("/login", authController.login);
 
-// router.use(varifyToken)
+router.use(varifyToken)
+
+router.post('/varifyOtp', authController.varifyOTPAndSignup)
+// router.post("/register", authController.register);
+
 
 router.get("/profile", authController.getProfile);
 
