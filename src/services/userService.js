@@ -30,19 +30,19 @@ const saveUserInfo = async(data) => {
 
 }
 
-const register = async(email) => {
-    const user = await User.findOne({email});
+const register = async(userId) => {
     console.log("register user called")
+    const user = await User.findOne({_id: userId});
     if(!user) {
-        return resjson({success: false, message: "User not found"})
+        return {success: false, message: "User not found"}
     }
     
     const updatedUser = await User.findByIdAndUpdate(
-        user._id, 
+        userId, 
         {$set: {isVarified: true}},
         {new: true}
     )
-    return {success: true, message: "User registered successfully", user: updatedUser};
+    return {success: true, message: "User registered successfully", user: updatedUser}
 }
  
 
