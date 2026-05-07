@@ -14,7 +14,6 @@ exports.saveUserInfo = async (req, res, next) => {
   try {
     console.log("save User Info called");
     const response = await userService.saveUserInfo(req.body);
-    console.log(response, "response");
     if (!response.success) {
       return res.status(400).json({ message: response.message });
     }
@@ -24,6 +23,7 @@ exports.saveUserInfo = async (req, res, next) => {
         message: "User already exists, Please login first",
       });
     }
+    req.userId = response.user._id;
     next();
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -34,66 +34,63 @@ exports.sendOtp = async (req, res) => {
   try {
     console.log("send Otp called");
     const { email } = req.body;
+    const userId = req.userId;
 
     const otp = generateOtp();
-    const isOtp = await Otp.find({ email });
+    const isOtp = await Otp.find({ userId });
     if (isOtp) {
-      await Otp.deleteMany({ email });
+      await Otp.deleteMany({ userId });
     }
-    const response = await saveOtp(otp, email);
+    const response = await saveOtp(otp, email, userId);
     const isOtpSend = await sendOtpEmail(email, otp);
     if (isOtpSend.accepted.length === 0) {
       // mail haven't send
       throw new Error("Email not sent");
     }
-
-    res.status(200).json({ success: true, message: "OTP sent successfully" });
+    const token = generateToken(userId);
+    res.status(200).json({ success: true, message: "OTP sent successfully", token });
   } catch (error) {
-    console.log(error, "error 63");
     return res.status(500).json({ message: error.message });
   }
 };
 
 exports.varifyOTPAndSignup = async (req, res) => {
   try {
-    const { email, otp } = req.body;
-    const record = await Otp.findOne({ email, otp });
+    console.log("varifyOTP called")
+    const {otp} = req.body;
+    const userId = req.userId;
+    const record = await Otp.findOne({ userId });
 
     if (!record) {
-      return res.status(400).json({ message: "Invalid otp" });
+      return res.status(400).json({ success: false, message: "User don't exist" });
     }
-    console.log(record.expiresAt - new Date(), "time difference");
 
     if (record.expiresAt < new Date()) {
-      await Otp.deleteMany({ email });
-      return res.status(400).json({ message: "OTP expired" });
+      await Otp.deleteMany({ userId });
+      return res.status(404).json({ success: false, message: "OTP expired" });
     }
-
-    const registeredUser = await userService.register(email);
+    if(otp !== record.otp) {
+      return res.status(401).json({success: false, message: "Otp doesn't match"})
+    } 
+    const registeredUser = await userService.register(userId);
 
     if (!registeredUser.success) {
       return res.status(404).json(registeredUser);
     }
-    // await Otp.deleteMany({ email });
+    await Otp.deleteMany({ email })
 
-    const {user: {_id: userId, firstName, lastName} = {}} = registeredUser
-    console.log(userId, firstName, lastName, email, 94);
-    // return res.json(registeredUser);
-
+    const {user: {firstName, lastName, email} = {}} = registeredUser;
     await seedDefaultCategories(userId);
-
-    const token = generateToken(userId);
     return res.status(200).json({
       success: true,
       message: "Your account created successfully",
-      token,
       user: {
-        id: userId,
         name: `${firstName} ${lastName}`,
         email: email,
       },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -116,7 +113,6 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
   try {
     console.log("getProfile called");
-    console.log(req.userId);
     const userInfo = await userService.getProfile(req.userId);
     res.json(userInfo);
   } catch (error) {
