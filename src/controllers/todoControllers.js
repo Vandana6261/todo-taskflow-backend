@@ -66,7 +66,7 @@ const searchTodo = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
     console.log("Create Category is called");
-    const category = await todoService.createCategory(req.body);
+    const category = await todoService.createCategory(req.userId, req.body);
     return res.status(200).json(category)
   } catch (error) {
     return res.status(404).json({message: error.message})

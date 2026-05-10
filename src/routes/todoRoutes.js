@@ -31,7 +31,6 @@ router.use(varifyToken);
 
 // router.get('/:keyword', searchTodo)  // done
 
-// router.post('/createCategory', createCategory);
 // router.post('/signUp', createUser);
 
 // router.get('/getUserTodo/:userId', getUserTodo);
@@ -40,6 +39,7 @@ router.post("/createTodo", createTodo)
 router.get("/getTodo", getAllTodo);
 // router.get("/getTodo", getAllTodo);
 router.get('/getCat', getCategory)
+router.post('/createCategory', createCategory);
 
 router.delete("/:id", deleteTodo);
 router.put("/:id", updateTodo);

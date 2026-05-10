@@ -102,7 +102,7 @@ exports.login = async (req, res) => {
     console.log("Login");
     const response = await userService.login(req.body);
     if (!response.success) {
-      res.status(400).json({ message: response.message });
+      res.status(401).json({ message: response.message });
     }
     res.json(response);
   } catch (error) {

@@ -55,9 +55,9 @@ const searchTodo = async (keyword) => {
   });
 };
 
-const createCategory = async (data) => {
+const createCategory = async (userId, data) => {
   console.log("Call service");
-  return await Category.create(data);
+  return await Category.create({user: userId, ...data});
 };
 
 const createUser = async (data) => {
@@ -79,7 +79,7 @@ module.exports = {
   updateTodo,
   getAllTodo,
 //   searchTodo,
-//   createCategory,
+  createCategory,
   getCategory,
 //   createUser,
 //   getUserTodo,
