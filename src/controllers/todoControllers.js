@@ -56,7 +56,9 @@ const updateTodo = async (req, res) => {
 
 const searchTodo = async (req, res) => {
   console.log("Search todo called");
-  const todo = await todoService.searchTodo(req.params.keyword);
+  console.log(req.userId, "userId")
+  const todo = await todoService.searchTodo(req.userId, req.params.keyword);
+  console.log(todo)
   if (!todo) {
     return res.status(404).json({ message: "Todo not found" });
   }
