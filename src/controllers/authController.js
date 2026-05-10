@@ -77,9 +77,9 @@ exports.varifyOTPAndSignup = async (req, res) => {
     if (!registeredUser.success) {
       return res.status(404).json(registeredUser);
     }
-    await Otp.deleteMany({ email })     // to remove the otp after user logged in 
-
+    
     const {user: {firstName, lastName, email} = {}} = registeredUser;
+    await Otp.deleteMany({ email })     // to remove the otp after user logged in 
     await seedDefaultCategories(userId);
     return res.status(200).json({
       success: true,
