@@ -14,7 +14,7 @@ const getAllTodo = async (userId) => {
   const todos = await Todo.find({ 
     user: userId,
     isDeleted: false
-  });
+  }).populate('category');
   return todos;
 };
 
@@ -46,13 +46,14 @@ const getCategory = async (userId) => {
 };
 
 
-const searchTodo = async (keyword) => {
+const searchTodo = async (userId, keyword) => {
   return await Todo.find({
+    user: userId,
     $or: [
       { title: { $regex: keyword, $options: "i" } },
       { description: { $regex: keyword, $options: "i" } }, // i means case insensitive
     ],
-  });
+  }); 
 };
 
 const createCategory = async (userId, data) => {
@@ -78,7 +79,7 @@ module.exports = {
   deleteTodo,
   updateTodo,
   getAllTodo,
-//   searchTodo,
+  searchTodo,
   createCategory,
   getCategory,
 //   createUser,
