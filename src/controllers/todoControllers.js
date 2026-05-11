@@ -60,9 +60,9 @@ const searchTodo = async (req, res) => {
   const todo = await todoService.searchTodo(req.userId, req.params.keyword);
   console.log(todo)
   if (!todo) {
-    return res.status(404).json({ message: "Todo not found" });
+    return res.status(404).json({ success: false, message: "Todo not found" });
   }
-  res.json(todo);
+  res.status(200).json({success: true, message: "Todo found", todo});
 };
 
 const createCategory = async (req, res) => {
