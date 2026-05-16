@@ -3,10 +3,14 @@ const express = require('express');
 const app = express();
 const {varifyToken} = require("./middleware/authMiddleware")
 
+const allowOrigin = [
+    "http://localhost:5173",
+    "https://todo-taskflow-psi.vercel.app/"
+]
 
 app.use(
     cors({
-        origin: "http://localhost:5173"
+        origin: allowOrigin
     })
 )
 app.use(express.json());
