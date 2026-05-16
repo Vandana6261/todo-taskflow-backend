@@ -10,7 +10,8 @@ const allowOrigin = [
 
 app.use(
     cors({
-        origin: allowOrigin
+        origin: allowOrigin,
+        allowedHeaders: ["Content-Type", "Authorization"]
     })
 )
 app.use(express.json());
