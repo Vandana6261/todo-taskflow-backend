@@ -22,21 +22,18 @@ const sendOtpEmail = async (email, otp) => {
       },
     });
 
-    exports.sendOtp = async (email, otp) => {
-      const mailOptions = {
-        from: process.env.MAIL_USER,
-        to: email,
-        subject: "Your signUp otp",
-        html: `<h3>Your otp is ${otp} </h3> <p>Valid for 5 minutes </p>`,
-      };
-      return transporter.sendMail(mailOptions);
+    const mailOptions = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: "Your signUp otp",
+      html: `<h3>Your otp is ${otp} </h3> <p>Valid for 5 minutes </p>`,
     };
-
-    const response = await this.sendOtp(email, otp);
+    
+    const response = await transporter.sendMail(mailOptions);
     return response;
-    // return response;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
