@@ -21,16 +21,18 @@ const sendOtpEmail = async (email, otp) => {
     console.log("sendOtpEmail service called")
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      // port: 465,
+      port: 587,
+      // secure: true,
+      secure: false,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-      tls: {
-        rejectUnauthorized: false
-      },
-      family: 4
+      // tls: {
+      //   rejectUnauthorized: false
+      // },
+      // family: 4
     });
 
     const mailOptions = {
