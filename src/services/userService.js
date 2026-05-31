@@ -7,8 +7,7 @@ const Category = require("../models/category");
 console.log("userService called")
 
 const saveUserInfo = async(data) => {
-    console.log("userService called")
-
+    console.log("seveUserInfo service called")
     const {email, password} = data;
     let user = await User.findOne({email});
     
