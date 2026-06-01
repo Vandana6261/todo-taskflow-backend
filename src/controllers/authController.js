@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
-const { generateToken } = require("../utils/token");
+const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 const { generateOtp } = require("../utils/generateOtp");
 const userService = require("../services/userService");
 const seedDefaultCategories = require("../seed/seedCategories");
@@ -12,7 +12,6 @@ console.log("authController called");
 
 exports.saveUserInfo = async (req, res, next) => {
   try {
-    console.log("save User Info called");
     const response = await userService.saveUserInfo(req.body);
     if (!response.success) {
       return res.status(400).json({ message: response.message });
@@ -32,7 +31,6 @@ exports.saveUserInfo = async (req, res, next) => {
 
 exports.sendOtp = async (req, res) => {
   try {
-    console.log("send Otp called");
     const { email } = req.body;
     const userId = req.userId;
 
@@ -47,8 +45,27 @@ exports.sendOtp = async (req, res) => {
       // mail haven't send
       throw new Error("Email not sent");
     }
-    const token = generateToken(userId);
-    res.status(200).json({ success: true, message: "OTP sent successfully", token });
+
+    const accessToken = generateAccessToken(userId);
+    const refreshToken = generateRefreshToken(userId);
+
+    const cookieOptions = {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV == "production" ? true : false,
+      sameSite: 'lax'
+    }
+
+    res.cookie('accessToken', accessToken, {
+      ...cookieOptions, 
+      maxAge: 15 * 60 * 1000    // 15 minute
+    })
+
+    res.cookie('refreshToken', refreshToken, {
+      ...cookieOptions,
+      maxAge: 30 * 24 * 60 * 60 * 1000    // 30 days
+    })
+
+    res.status(200).json({success: true, message: "OTP sent successfully"})
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -56,7 +73,6 @@ exports.sendOtp = async (req, res) => {
 
 exports.varifyOTPAndSignup = async (req, res) => {
   try {
-    console.log("varifyOTP called")
     const {otp} = req.body;
     const userId = req.userId;
     const record = await Otp.findOne({ userId });
@@ -104,7 +120,28 @@ exports.login = async (req, res) => {
     if (!response.success) {
       res.status(401).json({ message: response.message });
     }
-    res.json(response);
+    console.log(response, "response")
+    const accessToken = generateAccessToken(response.user.id);
+    const refreshToken = generateRefreshToken(response.user.id);
+
+    const cookieOptions = {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV == "production" ? true : false,
+      sameSite: 'lax'
+    }
+
+    res.cookie('accessToken', accessToken, {
+      ...cookieOptions, 
+      maxAge: 15 * 60 * 1000    // 15 minute
+    })
+
+    res.cookie('refreshToken', refreshToken, {
+      ...cookieOptions,
+      maxAge: 30 * 24 * 60 * 60 * 1000    // 30 days
+    })
+
+    return res.status(200).json(response);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

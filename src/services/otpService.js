@@ -43,7 +43,6 @@ const sendOtpEmail = async (email, otp) => {
     };
     
     const response = await transporter.sendMail(mailOptions);
-    console.log("response of sendOtpMail", response);
     return response;
   } catch (error) {
     console.log(error);

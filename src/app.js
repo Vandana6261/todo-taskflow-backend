@@ -1,6 +1,7 @@
 const cors = require("cors")
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser')
 const {varifyToken} = require("./middleware/authMiddleware")
 
 const allowOrigin = [
@@ -20,12 +21,14 @@ if (process.env.FRONTEND_URL) {
 app.use(
     cors({
         origin: allowOrigin,
-        allowedHeaders: ["Content-Type", "Authorization"]
+        allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: true,
     })
 )
 app.use(express.json());
+app.use(cookieParser());
+
 app.use((req, res, next) => {
-    // console.log(req, "req");
     console.log(req.method, "req method");
     console.log(req.url, "req url");
     next();

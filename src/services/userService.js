@@ -70,12 +70,9 @@ const login = async(data) => {
             message: "Password doesn't match"
         }
     }
-
-    const token = generateToken(user._id);
     return {
         success: true,
         message: "Login Successfull",
-        token, 
         user: {
             id: user._id,
             name: `${user.firstName} ${user.lastName}`,
