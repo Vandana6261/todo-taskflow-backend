@@ -17,6 +17,7 @@ router.post('/refresh', authMiddleware.handleReferesh)
 router.use(varifyToken)
 
 router.post('/varifyOtp', authController.varifyOTPAndSignup)
+router.post('/logout', authController.logout)
 // router.post("/register", authController.register);
 
 
