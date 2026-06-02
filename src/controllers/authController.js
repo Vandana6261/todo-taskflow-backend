@@ -49,6 +49,13 @@ exports.sendOtp = async (req, res) => {
     const accessToken = generateAccessToken(userId);
     const refreshToken = generateRefreshToken(userId);
 
+    console.log("NODE_ENV =", process.env.NODE_ENV);
+
+    console.log({
+      secure: process.env.NODE_ENV == "production",
+      sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
+    });
+
     const cookieOptions = {
       httpOnly: true, 
       secure: process.env.NODE_ENV == "production" ? true : false,
@@ -114,7 +121,7 @@ exports.varifyOTPAndSignup = async (req, res) => {
   }
 };
 
-
+ 
 
 exports.login = async (req, res) => {
   try {
