@@ -21,9 +21,6 @@ console.log("todo routes called")
 router.use(varifyToken);
 
 
-
-
-
 router.post("/createTodo", createTodo)
 router.get("/getTodo", getAllTodo);
 // router.get("/getTodo", getAllTodo);

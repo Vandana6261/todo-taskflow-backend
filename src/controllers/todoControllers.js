@@ -2,6 +2,7 @@ const todoService = require("../services/todoService");
 const seedDefaultCategories = require("../seed/seedCategories")
 
 const createTodo = async (req, res) => {
+  console.log("createTodo")
   try {
     const todoData = {...req.body, user: req.userId};
     const todo = await todoService.createTodo(todoData);
@@ -12,8 +13,8 @@ const createTodo = async (req, res) => {
 };
 
 const getAllTodo = async (req, res) => {
+  console.log("getAllTodo controller")
   try {
-    console.log("getAllTodo called in controller")
 
     const response = await todoService.getAllTodo(req.userId);
     return res.json(response)
@@ -66,8 +67,8 @@ const searchTodo = async (req, res) => {
 };
 
 const createCategory = async (req, res) => {
+  console.log("Create Category is called");
   try {
-    console.log("Create Category is called");
     const category = await todoService.createCategory(req.userId, req.body);
     return res.status(200).json(category)
   } catch (error) {
@@ -86,6 +87,7 @@ const createUser = async (req, res) => {
 }
 
 const getUserTodo = async (req, res) => {
+  console.log("getUserTodo")
   try {
     const userTodos = await todoService.getUserTodo(req.params.userId);
     return res.status(200).json(userTodos)
