@@ -10,13 +10,13 @@ const allowOrigin = [
     "https://todo-taskflow-psi.vercel.app/"
 ];
 
-if (process.env.FRONTEND_URL) {
-    const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
-    if (!allowOrigin.includes(formattedUrl)) {
-        allowOrigin.push(formattedUrl);
-        allowOrigin.push(formattedUrl + "/");
-    }
-}
+// if (process.env.FRONTEND_URL) {
+//     const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
+//     if (!allowOrigin.includes(formattedUrl)) {
+//         allowOrigin.push(formattedUrl);
+//         allowOrigin.push(formattedUrl + "/");
+//     }
+// }
 
 app.use(
     cors({

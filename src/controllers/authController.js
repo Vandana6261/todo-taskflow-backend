@@ -41,9 +41,9 @@ exports.sendOtp = async (req, res) => {
     }
     const response = await saveOtp(otp, email, userId);
     const isOtpSend = await sendOtpEmail(email, otp);
-    if (isOtpSend.accepted.length === 0) {
+    if (!isOtpSend.success) {
       // mail haven't send
-      throw new Error("Email not sent");
+      return res.status(500).json(isOtpSend);
     }
 
     const accessToken = generateAccessToken(userId);
@@ -67,21 +67,24 @@ exports.sendOtp = async (req, res) => {
 
     res.status(200).json({success: true, message: "OTP sent successfully"})
   } catch (error) {
+    // console.log("Error while sending otp", error)
     return res.status(500).json({ message: error.message });
   }
 };
 
 exports.varifyOTPAndSignup = async (req, res) => {
+  console.log("varifyOTPAndSignup called")
   try {
     const {otp} = req.body;
     const userId = req.userId;
+    
     const record = await Otp.findOne({ userId });
-
+    
     if (!record) {
       return res.status(400).json({ success: false, message: "User don't exist" });
     }
 
-    if (record.expiresAt < new Date()) {
+    if (record.createdAt < new Date()) {
       await Otp.deleteMany({ userId });
       return res.status(404).json({ success: false, message: "OTP expired" });
     }
