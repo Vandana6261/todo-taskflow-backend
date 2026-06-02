@@ -10,11 +10,11 @@ const {
     searchTodo,
     createCategory,
     createUser,
-    getUserTodo
+    getUserTodo,
+    getCategory
 
 } = require('../controllers/todoControllers')
 const { varifyToken } = require('../middleware/authMiddleware');
-const { getCategory } = require('../controllers/todoControllers');
 
 console.log("todo routes called")
 

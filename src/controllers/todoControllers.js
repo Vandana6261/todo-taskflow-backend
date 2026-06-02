@@ -8,18 +8,19 @@ const createTodo = async (req, res) => {
     const todo = await todoService.createTodo(todoData);
     res.status(201).json(todo);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
 };
 
 const getAllTodo = async (req, res) => {
   console.log("getAllTodo controller")
   try {
-
     const response = await todoService.getAllTodo(req.userId);
     return res.json(response)
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -32,38 +33,54 @@ const getCategory = async (req, res) => {
       categories: category
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
 }
 
 const deleteTodo = async (req, res) => {
   console.log("deleteTodo called");
-  console.log(req.params.id, req.userId)
-  const todo = await todoService.deleteTodo(req.params.id, req.userId);
-  if (!todo) {
-    return res.status(404).json({ message: "Todo not found" });
+  try {
+    // console.log(req.params.id, req.userId)
+    const todo = await todoService.deleteTodo(req.params.id, req.userId);
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+    res.json({ message: "Todo deleted successfully" });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message: error.message})
   }
-  res.json({ message: "Todo deleted successfully" });
 };
 
 const updateTodo = async (req, res) => {
   console.log("Update todo called");
-  const todo = await todoService.updateTodo(req.params.id, req.userId, req.body);
-  if (!todo) {
-    return res.status(404).json({ message: "Todo not found" });
+  try {
+    const todo = await todoService.updateTodo(req.params.id, req.userId, req.body);
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+    res.json({ message: "Todo updated successfully" });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
-  res.json({ message: "Todo updated successfully" });
 };
 
 const searchTodo = async (req, res) => {
   console.log("Search todo called");
-  console.log(req.userId, "userId")
-  const todo = await todoService.searchTodo(req.userId, req.params.keyword);
-  console.log(todo)
-  if (!todo) {
-    return res.status(404).json({ success: false, message: "Todo not found" });
+  try {
+    // console.log(req.userId, "userId")
+    const todo = await todoService.searchTodo(req.userId, req.params.keyword);
+    console.log(todo)
+    if (!todo) {
+      return res.status(404).json({ success: false, message: "Todo not found" });
+    }
+    res.status(200).json({success: true, message: "Todo found", todo});
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message });
   }
-  res.status(200).json({success: true, message: "Todo found", todo});
 };
 
 const createCategory = async (req, res) => {
@@ -72,6 +89,7 @@ const createCategory = async (req, res) => {
     const category = await todoService.createCategory(req.userId, req.body);
     return res.status(200).json(category)
   } catch (error) {
+    console.log(error);
     return res.status(404).json({message: error.message})
   }
 };
@@ -82,7 +100,8 @@ const createUser = async (req, res) => {
     const user = await todoService.createUser(req.body);
     return res.status(200).json(user)
   } catch (error) {
-    return res.status(400).json({message: error.message})
+    console.log(error);
+    return res.status(500).json({message: error.message})
   }
 }
 
@@ -92,7 +111,8 @@ const getUserTodo = async (req, res) => {
     const userTodos = await todoService.getUserTodo(req.params.userId);
     return res.status(200).json(userTodos)
   } catch (error) {
-    return res.json(400).json({message: error.message})
+    console.log(error);
+    return res.json(500).json({message: error.message})
   }
 }
 
