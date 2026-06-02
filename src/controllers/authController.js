@@ -130,7 +130,7 @@ exports.login = async (req, res) => {
     const cookieOptions = {
       httpOnly: true, 
       secure: process.env.NODE_ENV == "production" ? true : false,
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV == "production" ? 'none' : 'lax'
     }
 
     res.cookie('accessToken', accessToken, {
