@@ -5,26 +5,22 @@ const otpSchema = new mongoose.Schema(
     {
         email: {
             type: String,
-            require: true,
+            required: true,
             trim: true
         },
         otp: {
             type: String,
-            require: true,
+            required: true,
         },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
-        },
-        expiresAt: {
-            type: Date,
-            require: true
-        },
+        }
     }, 
     {
         timeStamps: true
     }
 )
-
+otpSchema.index({createdAt: 1}, {expireAfterSeconds:300})
 module.exports = mongoose.model("Otp", otpSchema)
