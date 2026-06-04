@@ -6,6 +6,7 @@ const {varifyToken} = require("./middleware/authMiddleware")
 
 const allowOrigin = [
     "http://localhost:5173",
+    "https://todo-taskflow-psi.vercel.app/",
     process.env.FRONTEND_URL,
     process.env.FRONTEND_CLOUDFLARE_URL
 ];
