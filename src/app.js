@@ -10,6 +10,7 @@ const allowOrigin = [
     process.env.FRONTEND_CLOUDFLARE_URL
 ];
 
+// origin: process.env.FRONTEND_URLS||"http://localhost:5173",
 // if (process.env.FRONTEND_URL) {
 //     const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
 //     if (!allowOrigin.includes(formattedUrl)) {
@@ -20,7 +21,7 @@ const allowOrigin = [
 
 app.use(
     cors({
-        origin: allowOrigin,
+        origin: process.env.FRONTEND_URL || process.env.FRONTEND_CLOUDFLARE_URL || "http://localhost:5173",
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
     })
