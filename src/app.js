@@ -5,19 +5,26 @@ const cookieParser = require('cookie-parser')
 const {varifyToken} = require("./middleware/authMiddleware")
 
 const allowOrigin = [
-    "http://localhost:5173",
-    process.env.FRONTEND_URL,
-    process.env.FRONTEND_CLOUDFLARE_URL
+    "http://localhost:5173"
 ];
 
 // origin: process.env.FRONTEND_URLS||"http://localhost:5173",
-// if (process.env.FRONTEND_URL) {
-//     const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
-//     if (!allowOrigin.includes(formattedUrl)) {
-//         allowOrigin.push(formattedUrl);
-//         allowOrigin.push(formattedUrl + "/");
-//     }
-// }
+if (process.env.FRONTEND_URL) {
+    const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
+    if (!allowOrigin.includes(formattedUrl)) {
+        allowOrigin.push(formattedUrl);
+        allowOrigin.push(formattedUrl + "/");
+    }
+}
+
+if (process.env.FRONTEND_CLOUDFLARE_URL) {
+    const formattedUrl = process.env.FRONTEND_CLOUDFLARE_URL.replace(/\/$/, "");
+    if (!allowOrigin.includes(formattedUrl)) {
+        allowOrigin.push(formattedUrl);
+        allowOrigin.push(formattedUrl + "/");
+    }
+}
+
 
 app.use(
     cors({
