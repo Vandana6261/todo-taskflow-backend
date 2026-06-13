@@ -1,9 +1,9 @@
 const cors = require("cors")
 const express = require('express');
-const app = express();
 const cookieParser = require('cookie-parser')
 const {varifyToken} = require("./middleware/authMiddleware")
 
+const app = express();
 const allowOrigin = [
     "http://localhost:5173"
 ];

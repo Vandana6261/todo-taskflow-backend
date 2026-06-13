@@ -112,7 +112,6 @@ exports.varifyOTPAndSignup = async (req, res) => {
       message: "Your account created successfully",
       user: {
         name: `${firstName} ${lastName}`,
-        email: email,
       },
     });
   } catch (error) {
