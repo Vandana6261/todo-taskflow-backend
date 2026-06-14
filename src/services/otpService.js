@@ -18,7 +18,7 @@ const sendOtpEmail = async (email, otp) => {
   // console.log("sendOtpEmail called")
   const emailData = {
     sender_name: "TASKFLOW-TODO",
-      sender_email: process.env.MAIL_USER,
+      sender_email: process.env.EMAIL_USER,
       sender_password: process.env.EMAIL_PASS,
       recipient_email: email,
       subject: "■ API.OS // SECURITY CHALLENGE TOKEN",
