@@ -75,6 +75,7 @@ const login = async(data) => {
         message: "Login Successfull",
         user: {
             name: `${user.firstName} ${user.lastName}`,
+            id: user._id,
         }
     }
 }
