@@ -9,24 +9,14 @@ console.log("userService called")
 const saveUserInfo = async(data) => {
     console.log("seveUserInfo service called")
     const {email, password} = data;
-    let user = await User.findOne({email});
     
-    if(user) {
-        return {
-            success: true,
-            message: "User already exists",
-            user
-        }
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
     user = await User.create({...data, password: hashedPassword})
-    return {
-        success: true,
-        message: "User register successfully",
-        user
-    }
+    return user;
+}
 
+const isUserExists = async(email) => {
+    return await User.findOne({email});
 }
 
 const register = async(userId) => {
@@ -70,6 +60,7 @@ const login = async(data) => {
             message: "Password doesn't match"
         }
     }
+    
     return {
         success: true,
         message: "Login Successfull",
@@ -83,7 +74,8 @@ const login = async(data) => {
 
 module.exports = {
     saveUserInfo,
-    register, 
+    isUserExists,
+    register,
     getProfile,
     login
 }
