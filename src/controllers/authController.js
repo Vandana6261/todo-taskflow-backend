@@ -160,8 +160,8 @@ exports.login = async (req, res) => {
     return res.status(200).json({
       success: true,
       user: {
-         name: `${response.firstName} ${response.lastName}`,
-      }
+         name: `${response.name}`,
+      } 
     });
 
   } catch (error) {
