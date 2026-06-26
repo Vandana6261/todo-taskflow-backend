@@ -26,7 +26,7 @@ router.use(authRouterLimiter);
 
 router.post('/send-otp', authLimiter, authController.saveUserInfo, authController.sendOtp)
 router.post("/login", authLimiter, authController.login);
-router.post('/refresh', authMiddleware.handleReferesh)
+router.post('/refresh', authMiddleware.handleReferesh);
 
 router.use(varifyToken)
 
