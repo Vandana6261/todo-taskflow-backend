@@ -1,6 +1,7 @@
 const cors = require("cors")
 const express = require('express');
 const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
 const {varifyToken} = require("./middleware/authMiddleware")
 
 const app = express();
@@ -25,7 +26,7 @@ if (process.env.FRONTEND_CLOUDFLARE_URL) {
     }
 }
 
-
+app.use(helmet());
 app.use(
     cors({
         origin: allowOrigin,
