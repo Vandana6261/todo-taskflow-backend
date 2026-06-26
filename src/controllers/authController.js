@@ -1,16 +1,16 @@
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const { generateAccessToken, generateRefreshToken } = require("../utils/token");
-const { generateOtp } = require("../utils/generateOtp");
-const userService = require("../services/userService");
-const seedDefaultCategories = require("../seed/seedCategories");
-const { saveOtp, sendOtpEmail, deleteOldOtp, validateOtp } = require("../services/otpService");
-const Otp = require("../models/otp");
-// const {User} = require("../models/user")
+import User from "../models/user.js";
+import bcrypt from "bcryptjs";
+import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
+import { generateOtp } from "../utils/generateOtp.js";
+import * as userService from "../services/userService.js";
+import seedDefaultCategories from "../seed/seedCategories.js";
+import { saveOtp, sendOtpEmail, deleteOldOtp, validateOtp } from "../services/otpService.js";
+import Otp from "../models/otp.js";
+// import {User} from "../models/user.js"
 
 console.log("authController called");
 
-exports.saveUserInfo = async (req, res, next) => {
+export const saveUserInfo = async (req, res, next) => {
   try {
     const userData = req.body;
     const isUser = await userService.isUserExists(userData.email);
@@ -31,13 +31,12 @@ exports.saveUserInfo = async (req, res, next) => {
     }
 
     next();
-   
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-exports.sendOtp = async (req, res) => {
+export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
     const userId = req.userId;
@@ -48,7 +47,6 @@ exports.sendOtp = async (req, res) => {
     const response = await saveOtp(otp, email, userId);
     const isOtpSend = await sendOtpEmail(email, otp);
     if (!isOtpSend.success) {
-      // mail haven't send
       return res.status(500).json(isOtpSend);
     }
 
@@ -63,29 +61,21 @@ exports.sendOtp = async (req, res) => {
     });
 
     const cookieOptions = {
-      httpOnly: true, 
+      httpOnly: true,
       secure: process.env.NODE_ENV == "production" ? true : false,
       sameSite: process.env.NODE_ENV == "production" ? 'none' : 'lax',
-    }
+    };
 
-    res.cookie('accessToken', accessToken, {
-      ...cookieOptions, 
-      maxAge: 15 * 60 * 1000    // 15 minute
-    })
+    res.cookie('accessToken', accessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
+    res.cookie('refreshToken', refreshToken, { ...cookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
-    res.cookie('refreshToken', refreshToken, {
-      ...cookieOptions,
-      maxAge: 30 * 24 * 60 * 60 * 1000    // 30 days
-    })
-
-    res.status(200).json({success: true, message: "OTP sent successfully"})
+    res.status(200).json({ success: true, message: "OTP sent successfully" });
   } catch (error) {
-    // console.log("Error while sending otp", error)
     return res.status(500).json({ message: error.message });
   }
 };
 
-exports.varifyOTPAndSignup = async (req, res) => {
+export const varifyOTPAndSignup = async (req, res) => {
   try {
     const {otp} = req.body;
     const userId = req.userId;
@@ -129,7 +119,7 @@ exports.varifyOTPAndSignup = async (req, res) => {
 
  
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     console.log("Login");
     const response = await userService.login(req.body);
@@ -169,7 +159,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+export const logout = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
     const accessToken = req.cookies.accessToken;
@@ -185,7 +175,7 @@ exports.logout = async (req, res) => {
   }
 }
 
-exports.getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     console.log("getProfile called");
     const userInfo = await userService.getProfile(req.userId);

@@ -1,10 +1,16 @@
-const express = require('express');
+import express from 'express';
 
-const { createUser } = require('../controllers/userController')
-const authController = require("../controllers/authController");
-const authMiddleware = require("../middleware/authMiddleware")
-const { varifyToken } = require('../middleware/authMiddleware');
-const rateLimit = require("express-rate-limit");
+import * as authController from "../controllers/authController.js";
+import { 
+    saveUserInfo,
+    sendOtp,
+    login,
+    varifyOTPAndSignup,
+    logout,
+    getProfile
+} from "../controllers/authController.js"
+import { varifyToken, handleReferesh } from '../middleware/authMiddleware.js';
+import rateLimit from "express-rate-limit";
 
 const router = express.Router();
 
@@ -24,16 +30,16 @@ const authLimiter = rateLimit({
 
 router.use(authRouterLimiter);
 
-router.post('/send-otp', authLimiter, authController.saveUserInfo, authController.sendOtp)
-router.post("/login", authLimiter, authController.login);
-router.post('/refresh', authMiddleware.handleReferesh);
+router.post('/send-otp', authLimiter, saveUserInfo, sendOtp)
+router.post("/login", authLimiter, login);
+router.post('/refresh', handleReferesh);
 
 router.use(varifyToken)
 
-router.post('/varifyOtp', authLimiter, authController.varifyOTPAndSignup)
-router.post('/logout', authLimiter, authController.logout)
+router.post('/varifyOtp', authLimiter, varifyOTPAndSignup)
+router.post('/logout', authLimiter, logout)
 
 
-router.get("/me", authController.getProfile);
+router.get("/me", getProfile);
 
-module.exports = router;
+export default router;

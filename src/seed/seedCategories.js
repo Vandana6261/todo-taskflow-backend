@@ -1,5 +1,5 @@
 
-const Category = require('../models/category')
+import Category from '../models/category.js';
 
 const defaultCategories = ['work', 'shopping', 'personal'];
 
@@ -21,4 +21,4 @@ const seedDefaultCategories = async (userId) => {
     }
 }
 
-module.exports = seedDefaultCategories;
+export default seedDefaultCategories;

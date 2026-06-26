@@ -1,5 +1,5 @@
-const todoService = require("../services/todoService");
-const seedDefaultCategories = require("../seed/seedCategories")
+import todoService from '../services/todoService.js';
+import seedDefaultCategories from '../seed/seedCategories.js';
 
 const createTodo = async (req, res) => {
   console.log("createTodo")
@@ -116,7 +116,7 @@ const getUserTodo = async (req, res) => {
   }
 }
 
-module.exports = {
+export {
   createTodo,
   deleteTodo,
   updateTodo,

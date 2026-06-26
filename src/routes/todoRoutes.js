@@ -1,20 +1,19 @@
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-    createTodo,
-    getAllTodo,
-    getInitialCategory,
-    deleteTodo,
-    updateTodo,
-    searchTodo,
-    createCategory,
-    createUser,
-    getUserTodo,
-    getCategory
-
-} = require('../controllers/todoControllers')
-const { varifyToken } = require('../middleware/authMiddleware');
+import {
+  createTodo,
+  getAllTodo,
+  // getInitialCategory,
+  deleteTodo,
+  updateTodo,
+  searchTodo,
+  createCategory,
+  createUser,
+  getUserTodo,
+  getCategory,
+} from '../controllers/todoControllers.js';
+import { varifyToken } from '../middleware/authMiddleware.js';
 
 console.log("todo routes called")
 
@@ -31,4 +30,4 @@ router.get('/:keyword', searchTodo)  // done
 router.delete("/:id", deleteTodo);
 router.put("/:id", updateTodo);
 
-module.exports = router;
+export default router;

@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs")
-const {generateToken} = require("../utils/token")
-const Todo = require("../models/todo");
-const User = require("../models/user");
-const Category = require("../models/category");
+import bcrypt from 'bcryptjs';
+// import {generateToken} from '../utils/token.js';
+import Todo from '../models/todo.js';
+import User from '../models/user.js';
+import Category from '../models/category.js';
 
 console.log("userService called")
 
@@ -76,10 +76,10 @@ const login = async(data) => {
 }
 
 
-module.exports = {
-    saveUserInfo,
-    isUserExists,
-    register,
-    getProfile,
-    login
-}
+export {
+  saveUserInfo,
+  isUserExists,
+  register,
+  getProfile,
+  login,
+};

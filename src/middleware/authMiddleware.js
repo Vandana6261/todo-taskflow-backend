@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
-const generateAccessToken = require("../utils/token");
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
+// import { generateAccessToken } from "../utils/token.js"; // not used
 
 
 
-exports.varifyToken = async (req, res, next) => {
+export const varifyToken = async (req, res, next) => {
   try {
     console.log("varifyToken called");
     const cookies = req.cookies;
@@ -35,7 +35,7 @@ exports.varifyToken = async (req, res, next) => {
   }
 };
 
-exports.handleReferesh = async (req, res) => {
+export const handleReferesh = async (req, res) => {
   console.log("HandleRefresh called")
   const cookies = req.cookies;
   

@@ -1,6 +1,6 @@
-const Todo = require("../models/todo");
-const Category = require("../models/category");
-const User = require("../models/user");
+import Todo from '../models/todo.js';
+import Category from '../models/category.js';
+import User from '../models/user.js';
 
 console.log("service called");
 
@@ -74,7 +74,7 @@ const getUserTodo = async (userId) => {
   return await Todo.find({ user: userId });
 };
 
-module.exports = {
+export default {
   createTodo,
   deleteTodo,
   updateTodo,

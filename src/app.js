@@ -1,8 +1,10 @@
-const cors = require("cors")
-const express = require('express');
-const cookieParser = require('cookie-parser')
-const helmet = require('helmet')
-const {varifyToken} = require("./middleware/authMiddleware")
+import cors from "cors";
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import todoRoutes from './routes/todoRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { varifyToken } from "./middleware/authMiddleware.js";
 
 const app = express();
 const allowOrigin = [
@@ -43,7 +45,8 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/api/todo', require('./routes/todoRoutes'));
-app.use('/api/user', require('./routes/userRoutes'));
 
-module.exports = app;
+app.use('/api/todo', todoRoutes);
+app.use('/api/user', userRoutes);
+
+export default app;

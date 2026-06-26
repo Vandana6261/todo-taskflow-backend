@@ -1,8 +1,8 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+import nodemailer from 'nodemailer';
+import dns from 'dns';
 dns.setDefaultResultOrder("ipv4first");
 
-const Otp = require("../models/otp");
+import Otp from '../models/otp.js';
 
 const saveOtp = async (otp, email, userId) => {
   // console.log("otp saved service called");
@@ -60,7 +60,7 @@ const validateOtp = async (userId, otp) => {
   }
 };
 
-module.exports = {
+export {
   saveOtp,
   sendOtpEmail,
   deleteOldOtp,
