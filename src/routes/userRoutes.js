@@ -1,26 +1,39 @@
 const express = require('express');
 
-const router = express.Router();
 const { createUser } = require('../controllers/userController')
 const authController = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware")
 const { varifyToken } = require('../middleware/authMiddleware');
+const rateLimit = require("express-rate-limit");
+
+const router = express.Router();
 
 console.log("inside userRoute")
-// router.post('/signUp', userController.createUser);
 
-router.post('/send-otp', authController.saveUserInfo, authController.sendOtp)
-router.post("/login", authController.login);
+const authRouterLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: process.env.NODE_ENV === 'local' ? 1000 : 20,
+    message: "Too many authentication attempts from this IP, please try again after 1 hour"
+});
 
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: process.env.NODE_ENV === 'local' ? 1000 : 5, // High limit for local testing
+    message: "Too many authentication attempts from this IP, please try again after 15 minutes"
+});
+
+router.use(authRouterLimiter);
+
+router.post('/send-otp', authLimiter, authController.saveUserInfo, authController.sendOtp)
+router.post("/login", authLimiter, authController.login);
 router.post('/refresh', authMiddleware.handleReferesh)
 
 router.use(varifyToken)
 
-router.post('/varifyOtp', authController.varifyOTPAndSignup)
-router.post('/logout', authController.logout)
-// router.post("/register", authController.register);
+router.post('/varifyOtp', authLimiter, authController.varifyOTPAndSignup)
+router.post('/logout', authLimiter, authController.logout)
 
 
-router.get("/profile", authController.getProfile);
+router.get("/me", authController.getProfile);
 
 module.exports = router;
