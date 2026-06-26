@@ -36,7 +36,11 @@ const register = async(userId) => {
  
 
 const getProfile = async(userId) => {
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId).select({
+        password: 0,
+        email: 0,
+        _id: 0
+    });
     return user;
 }
 
