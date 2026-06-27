@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import { getCookieOptions } from "../utils/cookieOptions.js";
 // import { generateAccessToken } from "../utils/token.js"; // not used
 
 
@@ -60,16 +61,7 @@ export const handleReferesh = async (req, res) => {
         {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
       )
 
-      const cookieOptions = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production" ? true : false,
-        sameSite: process.env.NODE_ENV == "production" ? 'none' : 'lax',
-      };
-
-      res.cookie("accessToken", accessToken, {
-        ...cookieOptions,
-        maxAge: 15 * 60 * 1000, // 15 minute
-      });
+      res.cookie("accessToken", accessToken, {...getCookieOptions, maxAge: 15 * 60 * 1000, });
       
       return res.status(200).json({ 
         message: "Access token refreshed successfully!" 

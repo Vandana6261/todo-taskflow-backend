@@ -6,6 +6,7 @@ import * as userService from "../services/userService.js";
 import seedDefaultCategories from "../seed/seedCategories.js";
 import { saveOtp, sendOtpEmail, deleteOldOtp, validateOtp } from "../services/otpService.js";
 import Otp from "../models/otp.js";
+import { getCookieOptions } from "../utils/cookieOptions.js";
 // import {User} from "../models/user.js"
 
 console.log("authController called");
@@ -53,21 +54,8 @@ export const sendOtp = async (req, res) => {
     const accessToken = generateAccessToken(userId);
     const refreshToken = generateRefreshToken(userId);
 
-    console.log("NODE_ENV =", process.env.NODE_ENV);
-
-    console.log({
-      secure: process.env.NODE_ENV == "production",
-      sameSite: process.env.NODE_ENV == "production" ? "none" : "lax",
-    });
-
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV == "production" ? true : false,
-      sameSite: process.env.NODE_ENV == "production" ? 'none' : 'lax',
-    };
-
-    res.cookie('accessToken', accessToken, { ...cookieOptions, maxAge: 15 * 60 * 1000 });
-    res.cookie('refreshToken', refreshToken, { ...cookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    res.cookie('accessToken', accessToken, { ...getCookieOptions, maxAge: 15 * 60 * 1000 });
+    res.cookie('refreshToken', refreshToken, { ...getCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
     res.status(200).json({ success: true, message: "OTP sent successfully" });
   } catch (error) {
@@ -131,21 +119,10 @@ export const login = async (req, res) => {
     const accessToken = generateAccessToken(response.user.id);
     const refreshToken = generateRefreshToken(response.user.id);
 
-    const cookieOptions = {
-      httpOnly: true, 
-      secure: process.env.NODE_ENV == "production" ? true : false,
-      sameSite: process.env.NODE_ENV == "production" ? 'none' : 'lax'
-    }
 
-    res.cookie('accessToken', accessToken, {
-      ...cookieOptions, 
-      maxAge: 15 * 60 * 1000    // 15 minute
-    })
+    res.cookie('accessToken', accessToken, {...getCookieOptions, maxAge: 15 * 60 * 1000 })
 
-    res.cookie('refreshToken', refreshToken, {
-      ...cookieOptions,
-      maxAge: 30 * 24 * 60 * 60 * 1000    // 30 days
-    })
+    res.cookie('refreshToken', refreshToken, {...getCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 })
 
     return res.status(200).json({
       success: true,
