@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import todoRoutes from './routes/todoRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { varifyToken } from "./middleware/authMiddleware.js";
+import {errorMiddleware} from "./middleware/errorMiddleware.js"
 
 const app = express();
 const allowOrigin = [
@@ -48,5 +49,7 @@ app.use((req, res, next) => {
 
 app.use('/api/todo', todoRoutes);
 app.use('/api/user', userRoutes);
+
+app.use(errorMiddleware)
 
 export default app;

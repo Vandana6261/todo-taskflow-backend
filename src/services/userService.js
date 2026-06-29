@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import Todo from '../models/todo.js';
 import User from '../models/user.js';
 import Category from '../models/category.js';
+import { AppError } from '../utils/AppError.js';
 
 console.log("userService called")
 
@@ -11,7 +12,7 @@ const saveUserInfo = async(data) => {
     const {email, password} = data;
     
     const hashedPassword = await bcrypt.hash(password, 10);
-    user = await User.create({...data, password: hashedPassword})
+    let user = await User.create({...data, password: hashedPassword})
     return user;
 }
 
@@ -54,6 +55,7 @@ const login = async(data) => {
             success: false,
             message: "User don't exists"
         }
+        throw new AppError("User not found", 404)
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

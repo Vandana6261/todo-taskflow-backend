@@ -12,6 +12,7 @@ import { getCookieOptions } from "../utils/cookieOptions.js";
 console.log("authController called");
 
 export const saveUserInfo = async (req, res, next) => {
+  console.log("Save user info called")
   try {
     const userData = req.body;
     const isUser = await userService.isUserExists(userData.email);
@@ -24,7 +25,7 @@ export const saveUserInfo = async (req, res, next) => {
 
     if(isUser) {
       if(isUser.isVarified) {
-        res.status(409).json({success: false, message: "User already exists please login"})
+        return res.status(409).json({success: false, message: "User already exists please login"})
       }
       else {
         req.userId = isUser._id;
@@ -32,12 +33,13 @@ export const saveUserInfo = async (req, res, next) => {
     }
 
     next();
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err)
   }
 };
 
 export const sendOtp = async (req, res) => {
+  console.log("send otp called")
   try {
     const { email } = req.body;
     const userId = req.userId;
@@ -51,11 +53,11 @@ export const sendOtp = async (req, res) => {
       return res.status(500).json(isOtpSend);
     }
 
-    const accessToken = generateAccessToken(userId);
-    const refreshToken = generateRefreshToken(userId);
+    // const accessToken = generateAccessToken(userId);
+    // const refreshToken = generateRefreshToken(userId);
 
-    res.cookie('accessToken', accessToken, { ...getCookieOptions, maxAge: 15 * 60 * 1000 });
-    res.cookie('refreshToken', refreshToken, { ...getCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    // res.cookie('accessToken', accessToken, { ...getCookieOptions, maxAge: 15 * 60 * 1000 });
+    // res.cookie('refreshToken', refreshToken, { ...getCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
     res.status(200).json({ success: true, message: "OTP sent successfully" });
   } catch (error) {
@@ -132,7 +134,7 @@ export const login = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error)
   }
 };
 

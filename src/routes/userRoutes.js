@@ -1,5 +1,4 @@
 import express from 'express';
-
 import * as authController from "../controllers/authController.js";
 import { 
     saveUserInfo,
@@ -11,6 +10,7 @@ import {
 } from "../controllers/authController.js"
 import { varifyToken, handleReferesh } from '../middleware/authMiddleware.js';
 import rateLimit from "express-rate-limit";
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 const router = express.Router();
 
@@ -31,11 +31,10 @@ const authLimiter = rateLimit({
 router.use(authRouterLimiter);
 
 router.post('/send-otp', authLimiter, saveUserInfo, sendOtp)
-router.post("/login", authLimiter, login);
+
+router.post("/login", authLimiter, asyncHandler(login));
 router.post('/refresh', handleReferesh);
-
 router.use(varifyToken)
-
 router.post('/varifyOtp', authLimiter, varifyOTPAndSignup)
 router.post('/logout', authLimiter, logout)
 
