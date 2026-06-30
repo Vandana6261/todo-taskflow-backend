@@ -61,7 +61,7 @@ export const handleReferesh = async (req, res) => {
         {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
       )
 
-      res.cookie("accessToken", accessToken, {...getCookieOptions, maxAge: 15 * 60 * 1000, });
+      res.cookie("accessToken", accessToken, {...getCookieOptions(), maxAge: 15 * 60 * 1000, });
       
       return res.status(200).json({ 
         message: "Access token refreshed successfully!" 

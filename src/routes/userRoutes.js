@@ -30,12 +30,13 @@ const authLimiter = rateLimit({
 
 router.use(authRouterLimiter);
 
-router.post('/send-otp', authLimiter, saveUserInfo, sendOtp)
+// router.post('/send-otp', authLimiter, saveUserInfo, sendOtp)
+router.post('/send-otp', authLimiter, asyncHandler(sendOtp))
 
 router.post("/login", authLimiter, asyncHandler(login));
 router.post('/refresh', handleReferesh);
+router.post('/varify-and-register', authLimiter, varifyOTPAndSignup, saveUserInfo)
 router.use(varifyToken)
-router.post('/varifyOtp', authLimiter, varifyOTPAndSignup)
 router.post('/logout', authLimiter, logout)
 
 

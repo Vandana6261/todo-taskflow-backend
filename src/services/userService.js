@@ -9,15 +9,18 @@ console.log("userService called")
 
 const saveUserInfo = async(data) => {
     console.log("seveUserInfo service called")
-    const {email, password} = data;
-    
+    const {password} = data;
     const hashedPassword = await bcrypt.hash(password, 10);
     let user = await User.create({...data, password: hashedPassword})
     return user;
 }
 
 const isUserExists = async(email) => {
-    return await User.findOne({email});
+    const user = await User.findOne({email});
+    if (user) {
+        throw new AppError("User already exists", 409);
+    }
+    return false;
 }
 
 const register = async(userId) => {
