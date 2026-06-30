@@ -20,15 +20,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    mobileNo: {
-        type: String,
-        max: 20,
-        trim: true
-    },
-    isVarified: {
-        type: Boolean,
-        default: false
-    }
+    // mobileNo: {
+    //     type: String,
+    //     max: 20,
+    //     trim: true
+    // }
 })
 
 

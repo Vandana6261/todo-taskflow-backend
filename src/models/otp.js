@@ -11,13 +11,8 @@ const otpSchema = new mongoose.Schema(
         otp: {
             type: String,
             required: true,
-        },
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
         }
-    }, 
+    },
     {
         timeStamps: true
     }
