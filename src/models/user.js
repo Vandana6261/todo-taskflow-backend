@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    refreshHashed: {
+        type: String,
+        default: null
+    },
     // mobileNo: {
     //     type: String,
     //     max: 20,

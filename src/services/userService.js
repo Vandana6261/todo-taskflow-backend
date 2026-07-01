@@ -15,12 +15,35 @@ const saveUserInfo = async(data) => {
     return user;
 }
 
+const updateTokenToDB = async(userId, token) => {
+    const isTokenAdded = await User.findOneAndUpdate(
+        {_id: userId},
+        {refreshHashed: token}
+    )
+    if(!isTokenAdded) throw new AppError("Something went wrong", 500);
+    return true;
+}
+
+const removeTokenFromDB = async(userId) => {
+    const isTokenDeleted = await User.findByIdAndUpdate(
+        userId,
+        {refreshHashed: null}
+    )
+    if(!isTokenDeleted) throw new AppError("Something went wrong", 500)
+    return true;
+}
+
 const isUserExists = async(email) => {
     const user = await User.findOne({email});
     if (user) {
         throw new AppError("User already exists", 409);
     }
     return false;
+}
+
+const getUser = async(userId) => {
+    const user = await User.findById(userId);
+    return user;
 }
 
 const register = async(userId) => {
@@ -43,8 +66,10 @@ const getProfile = async(userId) => {
     const user = await User.findById(userId).select({
         password: 0,
         email: 0,
-        _id: 0
+        _id: 0,
+        refreshHashed: 0
     });
+    console.log(user);
     return user;
 }
 
@@ -83,8 +108,11 @@ const login = async(data) => {
 
 export {
   saveUserInfo,
+  updateTokenToDB,
+  removeTokenFromDB,
   isUserExists,
   register,
   getProfile,
   login,
+  getUser,
 };

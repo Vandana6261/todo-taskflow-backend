@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
+import crypto from "crypto"
 import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
 import { generateOtp } from "../utils/generateOtp.js";
 import * as userService from "../services/userService.js";
@@ -26,6 +27,9 @@ export const saveUserInfo = async (req, res, next) => {
 
   const accessToken = generateAccessToken(userId);
   const refreshToken = generateRefreshToken(userId);
+
+  const hashedToken = crypto.createHash('sha256').update(refreshToken).digest("hex")
+  await userService.updateTokenToDB(userId, hashedToken);
 
   res.cookie("accessToken", accessToken, {
     ...getCookieOptions(),
@@ -94,6 +98,8 @@ export const login = async (req, res, next) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
+    const isUpdatedRefreshTokenInDB = userService.updateTokenToDB(response.user.id, refreshToken);
+
     return res.status(200).json({
       success: true,
       user: {
@@ -111,6 +117,8 @@ export const logout = async (req, res) => {
     const accessToken = req.cookies.accessToken;
     res.clearCookie("refreshToken");
     res.clearCookie("accessToken");
+
+    const isTokenDeleted = userService.removeTokenFromDB(req.userId)
 
     return res.status(200).json({
       success: true,
